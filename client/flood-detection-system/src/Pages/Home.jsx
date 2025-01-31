@@ -33,7 +33,7 @@ const Home = () => {
           <h1 className="text-2xl font-bold mb-4 text-center">
             Tunnel Sensor Dashboard
           </h1>
-          <div className="bg-red-100 w-full p-4 m-2">
+          <div className=" w-full p-4 m-2">
             <Time />
           </div>
 

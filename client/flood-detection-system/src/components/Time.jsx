@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Time = () => {
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const [date, setDate] = useState(new Date().toLocaleDateString());
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date().toLocaleTimeString());
+    }, 1000);
+    setDate(new Date().toLocaleDateString());
+    return () => clearInterval(timer);
+  }, []);
   return (
     <StyledWrapper>
       <div className="card">
@@ -41,10 +50,10 @@ const Time = () => {
           </div>
           <div className="right-side">
             <div>
-              <div className="hour">23:56</div>
-              <div className="date">MON 08-23</div>
+              <div className="hour">{time}</div>
+              <div className="date">{date}</div>
             </div>
-            <div className="city">A Coruña</div>
+            <div className="city">change</div>
           </div>
         </section>
         <section className="days-section">
