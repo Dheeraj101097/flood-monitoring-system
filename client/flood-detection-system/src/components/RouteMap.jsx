@@ -31,7 +31,7 @@ const Routing = ({ startCity, endCity }) => {
   const map = useMap();
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
-
+  const [route, SetRoute] = useState(null);
   useEffect(() => {
     const fetchCoordinates = async () => {
       const startCoords = await getCityCoordinates(startCity);
@@ -39,7 +39,6 @@ const Routing = ({ startCity, endCity }) => {
       setStart(startCoords);
       setEnd(endCoords);
     };
-
     if (startCity && endCity) {
       fetchCoordinates();
     }
@@ -47,33 +46,56 @@ const Routing = ({ startCity, endCity }) => {
 
   useEffect(() => {
     if (!map || !start || !end) return;
-
     //
     let routingControl;
     let selectedRouteLayer;
-
     routingControl = L.Routing.control({
       waypoints: [L.latLng(start[0], start[1]), L.latLng(end[0], end[1])],
-      routeWhileDragging: true,
-      lineOptions: {
-        styles: [{ color: "blue", weight: 6 }],
-      },
-      addWaypoints: false,
       router: L.Routing.osrmv1({
         serviceUrl: "https://router.project-osrm.org/route/v1", // OSRM public API
         alternatives: true, // Enable multiple routes
       }),
-    }).addTo(map);
+      routeWhileDragging: true,
+      lineOptions: {
+        styles: [{ color: "blue", weight: 6, opacity: 0.7 }],
+      },
+      addWaypoints: false,
+    })
+      .on("routesfound", (e) => {
+        const routes = e.routes;
+        // console.log("all routes found", routes);
+        // Draw all routes with different styles
+        routes.forEach((route, index) => {
+          const color = index === 0 ? "red" : index === 1 ? "green" : "red";
+          const routeLine = L.Routing.line(route, {
+            styles: [{ color, weight: 4, opacity: 0.6 }],
+          }).addTo(map);
+          // Add click handler to select this route
+          routeLine.on("click", () => {
+            if (selectedRouteLayer) {
+              map.removeLayer(selectedRouteLayer);
+            }
+            selectedRouteLayer = L.Routing.line(route, {
+              styles: [{ color: "orange", weight: 6, opacity: 0.9 }],
+            }).addTo(map);
+            // Optionally pan/zoom to the selected route
+            map.fitBounds(routeLine.getBounds());
+          });
+        });
+      })
+      .addTo(map);
 
     routingControl.on("routesfound", () => {
       // Zoom into the start location when the route is ready
-      map.setView(L.latLng(start[0], start[1]), 12);
+      map.setView(L.latLng(start[0], start[1]), 13);
     });
 
-    return () => map.removeControl(routingControl);
+    // Clean up on unmount
+    return () => {
+      if (routingControl) map.removeControl(routingControl);
+      if (selectedRouteLayer) map.removeLayer(selectedRouteLayer);
+    };
   }, [map, start, end]);
-
-  return null;
 };
 
 const RouteMap = () => {
@@ -120,7 +142,6 @@ const RouteMap = () => {
       <div className="flex flex-row items-center justify-center p-2">
         <div className="flex flex-row items-center justify-center p-2">
           <div className="bg-white p-6 rounded-2xl shadow-lg max-w-md w-full">
-            {/* First City Input */}
             <div className="relative mb-4">
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                 <img src={home1} alt="Home Icon" className="w-6 h-6" />
@@ -133,8 +154,6 @@ const RouteMap = () => {
                 className="w-full p-3 pl-10 text-lg border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
-
-            {/* Second City Input */}
             <div className="relative mb-4">
               <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                 <img
@@ -151,8 +170,7 @@ const RouteMap = () => {
                 className="w-full p-3 pl-10 text-lg border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
             </div>
-
-            {/* Submit Button */}
+            {/* Submit */}
             <button
               className="w-full bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300 py-2 cursor-pointer"
               onClick={handleSubmit}
@@ -161,53 +179,19 @@ const RouteMap = () => {
             </button>
           </div>
         </div>
-
-        {/* {isRouteReady ? (
-        <MapContainer
-          center={currentLocation}
-          zoom={5}
-          style={{ height: "550px", width: "800px" }}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <Routing
-            startCity={city1}
-            endCity={city2}
-            onRouteReady={handleRouteReady}
-          />
-        </MapContainer>
-      ) : (
-        <div>current location in map</div>
-      )} */}
-
-        {/*  */}
         {loading ? (
-          <div className="mx-20">
-            <Loader />
-          </div>
+          <Loader />
         ) : (
-          <MapContainer
-            center={currentLocation}
-            zoom={6}
-            style={{ height: "500px", width: "700px" }}
-          >
-            {/* <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            /> */}
-            <TileLayer
-              url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-              // url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-              // url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" original
-              // url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-              // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>'
-            />
-
-            <Marker position={currentLocation}></Marker>
-            {isRouteReady && <Routing startCity={city1} endCity={city2} />}
-          </MapContainer>
+          <div>
+            <MapContainer
+              center={currentLocation}
+              zoom={6}
+              style={{ height: "500px", width: "700px" }}
+            >
+              <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+              {isRouteReady && <Routing startCity={city1} endCity={city2} />}
+            </MapContainer>
+          </div>
         )}
       </div>
     </>
