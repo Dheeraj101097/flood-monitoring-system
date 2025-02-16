@@ -1,9 +1,29 @@
 import React, { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
 import { getRelativePosition } from "chart.js/helpers";
+import { useState } from "react";
+import { auth, db } from "../firebaseconfig";
+import { ref, onValue } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 
 const ChartData = () => {
   const chartRef = useRef(null);
+  const [distance, setDistance] = useState([]);
+  const [timestamp, setTimestamp] = useState("-");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const distanceRef = ref(db, "underpasses/underpass_1/sensors/ultrasonic");
+    onValue(distanceRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        setDistance(`${data.distance} cm`);
+        setTimestamp(new Date(data.timestamp * 1000).toLocaleString());
+      } else {
+        setDistance("No Data");
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const ctx = chartRef.current.getContext("2d");
@@ -13,21 +33,21 @@ const ChartData = () => {
       datasets: [
         {
           label: "Sensor 1",
-          data: [10, 15, 12, 14, 18], // Replace with actual sensor 1 data
+          data: [distance], // Replace with actual sensor 1 data
           borderColor: "rgba(255, 99, 132, 1)",
           backgroundColor: "rgba(255, 99, 132, 0.2)",
           fill: true,
         },
         {
           label: "Sensor 2",
-          data: [20, 25, 22, 24, 28], // Replace with actual sensor 2 data
+          data: [distance], // Replace with actual sensor 2 data
           borderColor: "rgba(54, 162, 235, 1)",
           backgroundColor: "rgba(54, 162, 235, 0.2)",
           fill: true,
         },
         {
           label: "Sensor 3",
-          data: [30, 35, 32, 34, 38], // Replace with actual sensor 3 data
+          data: [distance], // Replace with actual sensor 3 data
           borderColor: "rgba(75, 192, 192, 1)",
           backgroundColor: "rgba(75, 192, 192, 0.2)",
           fill: true,

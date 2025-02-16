@@ -29,6 +29,16 @@ app.get("/distance", (req, res) => {
   }
 });
 
+app.get("/data", (req, res) => {
+  res.json({
+    data: [
+      { sensor: "Sensor 1", value: 25 },
+      { sensor: "Sensor 2", value: 30 },
+      { sensor: "Sensor 3", value: 28 },
+    ],
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server is running at ${port}`);
 });

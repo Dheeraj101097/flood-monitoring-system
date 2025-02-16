@@ -27,11 +27,18 @@ const getCityCoordinates = async (city) => {
   }
 };
 
+const hazardLocations = [
+  [22.08, 82.051], // Example hazard location
+  [20.0, 78.0], // Add more as needed
+  [22.0808325, 82.0516102],
+  [18.52104, 73.85354],
+  [27.88879, 76.29123],
+];
+
 const Routing = ({ startCity, endCity }) => {
   const map = useMap();
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
-  const [route, SetRoute] = useState(null);
   useEffect(() => {
     const fetchCoordinates = async () => {
       const startCoords = await getCityCoordinates(startCity);
@@ -64,8 +71,33 @@ const Routing = ({ startCity, endCity }) => {
       .on("routesfound", (e) => {
         const routes = e.routes;
         // console.log("all routes found", routes);
+        let hazardDetected = false;
         // Draw all routes with different styles
         routes.forEach((route, index) => {
+          // Check if the route passes through a hazard location
+          route.coordinates.forEach((coord) => {
+            hazardLocations.forEach(([hazardLat, hazarLon]) => {
+              const distance = map.distance(
+                L.latLng(coord.lat, coord.lng),
+                L.latLng(hazardLat, hazarLon)
+              );
+              if (distance <= 500) {
+                // Adjust this value based on your hazard detection threshold
+                hazardDetected = true;
+                // mark
+                L.circle([hazardLat, hazarLon], {
+                  color: "red",
+                  radius: 3000,
+                }).addTo(map);
+              }
+            });
+          });
+          if (hazardDetected) {
+            alert(
+              "Hazard detected on the route. Please select an alternative route."
+            );
+          }
+
           const color = index === 0 ? "red" : index === 1 ? "green" : "red";
           const routeLine = L.Routing.line(route, {
             styles: [{ color, weight: 4, opacity: 0.6 }],
