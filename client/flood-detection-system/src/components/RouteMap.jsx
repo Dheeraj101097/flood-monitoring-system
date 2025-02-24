@@ -8,7 +8,7 @@ import axios from "axios";
 import home1 from "../assets/home2.png";
 import destination2 from "../assets/destination1.png";
 import Loader from "./Loader";
-
+import location from "../assets/location.png";
 const getCityCoordinates = async (city) => {
   try {
     const response = await axios.get(
@@ -29,9 +29,9 @@ const getCityCoordinates = async (city) => {
 
 const hazardLocations = [
   [22.08, 82.051], // Example hazard location
-  [20.0, 78.0], // Add more as needed
-  [22.0808325, 82.0516102],
-  [18.52104, 73.85354],
+  // [20.0, 78.0], // Add more as needed
+  // [22.0808325, 82.0516102],
+  // [18.52104, 73.85354],
   [27.88879, 76.29123],
 ];
 
@@ -89,6 +89,14 @@ const Routing = ({ startCity, endCity }) => {
                   color: "red",
                   radius: 3000,
                 }).addTo(map);
+                // var marker = L.marker([latitude, longitude], {
+                //   icon: L.icon({
+                //     iconUrl: "../assets/location.png",
+
+                //     iconSize: [25, 41],
+                //     iconAnchor: [12, 41],
+                //   }),
+                // });
               }
             });
           });
@@ -222,6 +230,9 @@ const RouteMap = () => {
             >
               <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
               {isRouteReady && <Routing startCity={city1} endCity={city2} />}
+              {/* <Marker>
+                <Popup>Current Location</Popup>
+              </Marker> */}
             </MapContainer>
           </div>
         )}
@@ -231,3 +242,5 @@ const RouteMap = () => {
 };
 
 export default RouteMap;
+
+// location name

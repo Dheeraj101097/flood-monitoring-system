@@ -5,58 +5,85 @@ import { useNavigate } from "react-router-dom";
 import ChartData from "../Components/ChartData";
 import RouteMap from "../Components/RouteMap";
 import Time from "../Components/Time";
+import { FaBars, FaSun, FaMoon, FaUser, FaHome } from "react-icons/fa";
+import { IoMdLogOut } from "react-icons/io";
+import DashBoardTable from "../components/DashBoardTable";
 
 const Dashboard = () => {
-  const [distance, setDistance] = useState("Loading...");
-  const [timestamp, setTimestamp] = useState("-");
-  const navigate = useNavigate();
+  const [darkMode, setDarkMode] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const distanceRef = ref(db, "underpasses/underpass_1/sensors/ultrasonic");
-    onValue(distanceRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        setDistance(`${data.distance} cm`);
-        setTimestamp(new Date(data.timestamp * 1000).toLocaleString());
-      } else {
-        setDistance("No Data");
-      }
-    });
-  }, []);
-
+  const name = localStorage.getItem(
+    "firebase:host:monitor-fea81-default-rtdb.firebaseio.com"
+  );
+  const handleLogout = () => {
+    auth.signOut();
+    navigate("/login");
+    localStorage.removeItem(
+      "firebase:host:monitor-fea81-default-rtdb.firebaseio.com"
+    );
+  };
   return (
     <>
-      <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-        <h1 className="text-2xl font-bold text-blue-700">
-          Flood Monitoring Dashboard
-        </h1>
-      </div>
+      <div className="flex h-screen bg-gray-100 ">
+        {/* Sidebar */}
+        <div
+          className={`fixed left-0 top-0 h-full bg-gradient-to-b from-blue-900 to-blue-800 text-white transition-all duration-300 ${
+            isOpen ? "w-64 p-4" : "w-16 p-2"
+          }`}
+        >
+          <button
+            className="text-white text-2xl mt-3 ml-2"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <FaHome />
+          </button>
+          {isOpen && (
+            <nav className="mt-4 space-y-4">
+              <a href="#" className="block">
+                Home
+              </a>
+              <a href="#" className="block">
+                Services
+              </a>
+              <a href="#" className="block">
+                Contact
+              </a>
+            </nav>
+          )}
+        </div>
 
-      <div className="min-h-screen bg-gray-100 p-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className=" w-full p-4 m-2">
-            <Time />
+        {/* Main Content */}
+        <div className="flex-1 ml-16">
+          {/* Navbar */}
+          <div className="flex justify-between items-center p-4 bg-[#020040] shadow-md">
+            <h1 className="text-xl font-bold text-gray-800 dark:text-white">
+              Flood Monitoring System
+            </h1>
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-800 dark:text-white flex items-center">
+                <FaUser className="mr-2" /> {name}
+              </span>
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="text-gray-800 dark:text-white text-xl "
+              >
+                {darkMode ? <FaSun /> : <FaMoon />}
+              </button>
+              <button
+                className="text-red-400 cursor-pointer text-xl"
+                onClick={handleLogout}
+              >
+                <IoMdLogOut />
+              </button>
+            </div>
           </div>
-          <div className="bg-white p-8 m-6 rounded-lg shadow-lg text-center">
-            <h2>Sensor 1</h2>
-            <p className="text-lg font-semibold mt-4">Distance: {distance}</p>
-            <p className="text-sm text-gray-500">Last Updated: {timestamp}</p>
-          </div>
-          <div className="bg-white p-8 m-6 rounded-lg shadow-lg text-center">
-            <h2>Sensor 2</h2>
-            <p className="text-lg font-semibold mt-4">Distance: {distance}</p>
-            <p className="text-sm text-gray-500">Last Updated: {timestamp}</p>
-          </div>
-          <div className="bg-white p-8 m-6 rounded-lg shadow-lg text-center">
-            <h2>Sensor 3</h2>
-            <p className="text-lg font-semibold mt-4">Distance: {distance}</p>
-            <p className="text-sm text-gray-500">Last Updated: {timestamp}</p>
+
+          {/* Content */}
+          <div className="mt-6 text-gray-800 ">
+            <DashBoardTable />
           </div>
         </div>
-        <ChartData />
-      </div>
-      <div>
-        <RouteMap />
       </div>
     </>
   );
