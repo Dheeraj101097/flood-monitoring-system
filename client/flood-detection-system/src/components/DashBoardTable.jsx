@@ -1,80 +1,65 @@
-import React from "react";
-
-const data = [
-  {
-    name: "MG Road Underpass",
-    waterLevel: [2.5, 2.6, 2.4],
-    status: "Active",
-  },
-  {
-    name: "Rajiv Chowk Tunnel",
-    waterLevel: [1.8, 1.7, 1.9],
-    status: "Active",
-  },
-  {
-    name: "Ring Road Underpass",
-    waterLevel: [3.2, 3.3, 3.1],
-    status: "Inactive",
-  },
-  {
-    name: "Delhi Gate Subway",
-    waterLevel: [0.9, 0.8, 1.0],
-    status: "Active",
-  },
-  {
-    name: "Noida Sec 16",
-    waterLevel: [2.0, 2.1, 2.0],
-    status: "Active",
-  },
-  {
-    name: "Sarai Kale Khan",
-    waterLevel: [3.8, 3.7, 3.9],
-    status: "Inactive",
-  },
-  {
-    name: "AIIMS Underpass",
-    waterLevel: [1.2, 1.1, 1.3],
-    status: "Active",
-  },
-  {
-    name: "Dhaula Kuan Subway",
-    waterLevel: [4.1, 4.0, 4.2],
-    status: "Inactive",
-  },
-
-  {
-    name: "Pragati Maidan Pass",
-    waterLevel: [3.1, 1.5, 4.2],
-    status: "Active",
-  },
-  { name: "Connaught Place", waterLevel: [2.6, 8.2, 5.1], status: "Active" },
-];
+import React, { useEffect, useState } from "react";
+import { db } from "../firebaseconfig";
+import {
+  ref,
+  onValue,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const DashBoardTable = () => {
+  const [recievedData, SetRecievedData] = useState([]);
+  useEffect(() => {
+    const distanceRef = ref(db, "underpasses");
+    onValue(distanceRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const result = snapshot.val();
+        // console.log(result);
+        // Convert object to an array
+        const resultInArray = Object.keys(result).map((key) => ({
+          passName: key, // Keep the Firebase key for reference
+          ...result[key],
+        }));
+        SetRecievedData(resultInArray);
+        // console.log("Data retrieved successfully", resultInArray);
+      } else {
+        console.log("No data available");
+        SetRecievedData();
+      }
+    });
+  }, []);
+
   return (
     <div className="overflow-x-auto p-4">
       <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
         <thead className="bg-gray-800 text-white">
           <tr>
             <th className="py-2 px-4 text-left">Underpass Name</th>
-            <th className="py-2 px-4 text-left">Water Level</th>
+            <th className="py-2 px-4 text-left">Latitude Longitude</th>
             <th className="py-2 px-4 text-left">Device Status</th>
+            <th className="py-2 px-4 text-left">Water Level</th>
+            <th className="py-2 px-4 text-left">Timestamp</th>
             <th className="py-2 px-4 text-center">Full View</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
-            <tr key={index} className="border-b hover:bg-gray-100 transition">
-              <td className="py-2 px-4">{item.name}</td>
-              <td className="py-2 px-4">{item.waterLevel}</td>
-              <td
-                className={`py-2 px-4 ${
-                  item.status === "Active"
-                    ? "text-green-600 font-semibold"
-                    : "text-red-600 font-semibold"
-                }`}
-              >
-                {item.status}
+          {recievedData.map((item) => (
+            <tr key={item.id} className="border-b hover:bg-gray-100 transition">
+              <td className="py-2 px-4">{item.passName || "N/A"}</td>
+              <td className="py-2 px-4">
+                {item.location?.lat.toFixed(2) || "N/A"} &{" "}
+                {item.location?.lng.toFixed(2) || "N/A"}
+              </td>
+              <td className="py-2 px-4">
+                {item.sensors ? "Active" : "Deactive"}
+              </td>
+              <td className="py-2 px-4">
+                {item.sensors?.ultrasonic?.distance < 5
+                  ? "Flooded 🔴"
+                  : "Safe 🟢" || "N/A"}
+              </td>
+              <td className="py-2 px-4">
+                {new Date(
+                  item.sensors?.ultrasonic?.timestamp * 1000
+                ).toLocaleString() || "N/A"}
               </td>
               <td className="py-2 px-4 text-center cursor-pointer">🔍</td>
             </tr>

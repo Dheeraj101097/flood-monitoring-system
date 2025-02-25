@@ -4,7 +4,7 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import googlelogo from "../assets/googlelogo.png";
 
 const Signin = () => {
@@ -36,13 +36,12 @@ const Signin = () => {
     }
   };
 
-  //  for google
-  const [user, setUser] = useState(null);
-
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      setUser(result.user);
+      // pass the user data to dashboard page
+      localStorage.setItem("username", result.user.displayName);
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error.message);
     }
@@ -104,26 +103,14 @@ const Signin = () => {
             >
               Forgot Password?
             </button>
-            {!user ? (
-              <button
-                onClick={handleGoogleLogin}
-                className=" text-black py-3 px-2 rounded-lg flex items-center justify-center cursor-pointer hover:underline  decoration-black "
-              >
-                <img src={googlelogo} alt="Google" className="w-5 h-5 mr-1" />
-                Sign in with Google
-              </button>
-            ) : (
-              <div className="text-center mt-4">
-                <p className="text-lg font-medium text-blue-700">
-                  Welcome, {user.displayName}
-                </p>
-                <img
-                  src={user.photoURL}
-                  alt="Profile"
-                  className="w-16 h-16 rounded-full mx-auto mt-2 border-2 border-green-400"
-                />
-              </div>
-            )}
+
+            <button
+              onClick={handleGoogleLogin}
+              className=" text-black py-3 px-2 rounded-lg flex items-center justify-center cursor-pointer hover:underline  decoration-black "
+            >
+              <img src={googlelogo} alt="Google" className="w-5 h-5 mr-1" />
+              Sign in with Google
+            </button>
           </div>
         </div>
       </div>
