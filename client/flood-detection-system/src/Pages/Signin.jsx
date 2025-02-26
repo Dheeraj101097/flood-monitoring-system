@@ -6,6 +6,8 @@ import {
 } from "firebase/auth";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import googlelogo from "../assets/googlelogo.png";
+import { handleFailure, handleSuccess } from "../utils.js";
+import { ToastContainer } from "react-toastify";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -17,21 +19,24 @@ const Signin = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      handleSuccess("Login successful");
       navigate("/dashboard"); // Redirect to dashboard
     } catch (err) {
+      handleFailure("Invalid credentials");
       setError("Invalid credentials");
     }
   };
 
   const handleForgotPassword = async () => {
     if (!email) {
-      setError("Please enter your email first.");
+      handleFailure("Please enter your email first.");
       return;
     }
     try {
       await sendPasswordResetEmail(auth, email);
-      setError("Password reset email sent!");
+      handleSuccess("Password reset email sent!");
     } catch (err) {
+      handleFailure("Failed to send password reset email.");
       setError("Error: " + err.message);
     }
   };
@@ -51,10 +56,9 @@ const Signin = () => {
     <>
       <div className="flex justify-center items-center min-h-screen  ">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md ">
-          <h1 className="text-4xl font-bold text-blue-700 text-center mb-6">
-            Flood Monitoring System
+          <h1 className="text-4xl font-semibold text-blue-700 text-center mb-6">
+            Login
           </h1>
-
           <form
             className="space-y-6 flex flex-col justify-center items-center"
             onSubmit={handleLogin}
@@ -77,7 +81,7 @@ const Signin = () => {
             />
             <button
               type="submit"
-              className="w-full bg-gradient-to-br from-blue-600 to-blue-300 text-white font-semibold py-3 rounded-lg cursor-pointer"
+              className="w-full bg-gradient-to-br from-blue-600 to-blue-300 text-white font-semibold py-3 rounded-lg cursor-pointer hover:bg-green-400 "
             >
               Login
             </button>
@@ -90,10 +94,19 @@ const Signin = () => {
                 Signup
               </Link>
             </span>
-
-            {error && (
-              <p className="text-red-500 text-sm text-center ">{error}</p>
-            )}
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              // transition={Slide}
+            />
           </form>
           <div className="flex flex-row justify-between align-middle items-center my-7">
             <button

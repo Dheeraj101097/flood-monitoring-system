@@ -4,6 +4,8 @@ import { signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import googlelogo from "../assets/googlelogo.png";
 import { Link } from "react-router-dom";
+import { handleFailure, handleSuccess } from "../utils.js";
+import { ToastContainer } from "react-toastify";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -16,9 +18,10 @@ const Signup = () => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/dashboard"); // Redirect to dashboard
+      handleSuccess("Signup successful!");
+      navigate("/login");
     } catch (err) {
-      setError("Signup failed: " + err.message);
+      handleFailure("Signup failed: " + err.message);
     }
   };
 
@@ -26,16 +29,17 @@ const Signup = () => {
   const handleGoogleSignup = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
+      handleSuccess("Signup successful!");
       navigate("/dashboard"); // Redirect after signup
     } catch (error) {
-      console.error("Google Signup failed:", error.message);
+      handleFailure("Google Signup failed: " + error.message);
     }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
-        <h1 className="text-4xl font-bold text-blue-700 text-center mb-6">
+        <h1 className="text-4xl font-semibold text-blue-700 text-center mb-6">
           Signup
         </h1>
 
@@ -65,6 +69,19 @@ const Signup = () => {
           >
             Signup
           </button>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            // transition={Slide}
+          />
         </form>
 
         <span>
