@@ -4,6 +4,7 @@ import {
   ref,
   onValue,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { Link, useNavigate } from "react-router-dom";
 
 const DashBoardTable = () => {
   const [recievedData, SetRecievedData] = useState([]);
@@ -45,8 +46,7 @@ const DashBoardTable = () => {
             <tr key={item.id} className="border-b hover:bg-gray-100 transition">
               <td className="py-2 px-4">{item.passName || "N/A"}</td>
               <td className="py-2 px-4">
-                {item.location?.lat.toFixed(2) || "N/A"} &{" "}
-                {item.location?.lng.toFixed(2) || "N/A"}
+                {item.location?.lat || "N/A"} & {item.location?.lng || "N/A"}
               </td>
               <td className="py-2 px-4">
                 {item.sensors ? "Active" : "Deactive"}
@@ -54,14 +54,23 @@ const DashBoardTable = () => {
               <td className="py-2 px-4">
                 {item.sensors?.ultrasonic?.distance < 5
                   ? "Flooded 🔴"
-                  : "Safe 🟢" || "N/A"}
+                  : "Clear 🟢" || "N/A"}
               </td>
               <td className="py-2 px-4">
                 {new Date(
                   item.sensors?.ultrasonic?.timestamp * 1000
                 ).toLocaleString() || "N/A"}
               </td>
-              <td className="py-2 px-4 text-center cursor-pointer">🔍</td>
+              <td className="py-2 px-4 text-center cursor-pointer">
+                {" "}
+                <Link
+                  className="hover:underline text-[#20cfff] hover:text-green-400"
+                  to="/fullview"
+                  state={{ underpass: item }}
+                >
+                  🔍 View In Detail
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>

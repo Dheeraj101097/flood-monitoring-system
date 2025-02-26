@@ -31,8 +31,8 @@ const Dashboard = () => {
       <div className="flex h-screen bg-gray-100 ">
         {/* Sidebar */}
         <div
-          className={`fixed left-0 top-0 h-full bg-gradient-to-b from-blue-900 to-blue-800 text-white transition-all duration-300 ${
-            isOpen ? "w-52 p-4" : "w-16 p-2"
+          className={`fixed left-0 top-0 h-full bg-gradient-to-b from-blue-900 to-blue-800 text-white transition-all duration-300  ${
+            isOpen ? "w-52 p-4 rounded-r-2xl" : "w-16 p-2 "
           }`}
         >
           <button
@@ -47,19 +47,16 @@ const Dashboard = () => {
                 <Link to="/dashboard">Home</Link>
               </span>
               <span className="block">
-                <Link to="/dashboard">Home</Link>
+                <Link to="/services">Services</Link>
               </span>
               <span className="block">
-                <Link to="/dashboard">Services</Link>
+                <Link to="/contacts">Contacts</Link>
               </span>
               <span className="block">
-                <Link to="/dashboard">Contacte</Link>
+                <Link to="/complaints">Complaints</Link>
               </span>
               <span className="block">
-                <Link to="/dashboard">Complaints</Link>
-              </span>
-              <span className="block">
-                <Link to="/dashboard">Call Nearby ..</Link>
+                <Link to="/call">Call Nearby ..</Link>
               </span>
             </nav>
           )}

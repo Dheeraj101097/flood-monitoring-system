@@ -7,7 +7,7 @@ import "leaflet-routing-machine";
 import axios from "axios";
 import home1 from "../assets/home2.png";
 import destination2 from "../assets/destination1.png";
-import Loader from "./Loader";
+import Loader from "../components/Loader";
 import location from "../assets/location.png";
 const getCityCoordinates = async (city) => {
   try {

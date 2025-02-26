@@ -4,6 +4,7 @@ import Signup from "./Pages/Signup";
 import Login from "./Pages/Signin";
 import Dashboard from "./Pages/Dashboard";
 import PrivateRoute from "./protectedRoute";
+import FullView from "./Pages/FullView";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -22,7 +23,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="*" element={<Login />} />
+        <Route path="/fullview" element={<FullView />} />
       </Routes>
     </>
   );
