@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, provider, signInWithPopup } from "../firebaseconfig.js";
 import {
   signInWithEmailAndPassword,
@@ -14,6 +14,7 @@ const SigninAdmin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [role, setRole] = useState(""); // default role is User
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -51,6 +52,13 @@ const SigninAdmin = () => {
       console.error("Login failed:", error.message);
     }
   };
+  useEffect(() => {
+    if (role === "Admin") {
+      navigate("/adminlogin");
+    } else if (role === "User") {
+      navigate("/login");
+    }
+  }, [role, navigate]);
 
   return (
     <>
@@ -59,6 +67,15 @@ const SigninAdmin = () => {
           <h1 className="text-4xl font-semibold text-blue-700 text-center mb-6">
             Admin Login
           </h1>
+
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="w-36 p-3 border mb-6 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="User">Login as User</option>
+            <option value="Admin">Login as Admin</option>
+          </select>
           <form
             className="space-y-6 flex flex-col justify-center items-center"
             onSubmit={handleLogin}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, provider, signInWithPopup } from "../firebaseconfig";
 import {
   signInWithEmailAndPassword,
@@ -14,13 +14,15 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [role, setRole] = useState(""); // default role is User
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
       handleSuccess("Login successful");
-      navigate("/map"); // Redirect to dashboard
+      navigate(role === "Admin" ? "/adminlogin" : "/login");
+      //direct to map page
     } catch (err) {
       handleFailure("Invalid credentials");
       setError("Invalid credentials");
@@ -51,14 +53,30 @@ const Signin = () => {
       console.error("Login failed:", error.message);
     }
   };
+  useEffect(() => {
+    if (role === "Admin") {
+      navigate("/adminlogin");
+    } else if (role === "User") {
+      navigate("/login");
+    }
+  }, [role, navigate]);
 
   return (
     <>
       <div className="flex justify-center items-center min-h-screen  ">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md ">
           <h1 className="text-4xl font-semibold text-blue-700 text-center mb-6">
-            Login
+            User Login
           </h1>
+
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="w-36 p-3 border mb-6 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            <option value="User">Login as User</option>
+            <option value="Admin">Login as Admin</option>
+          </select>
           <form
             className="space-y-6 flex flex-col justify-center items-center"
             onSubmit={handleLogin}
