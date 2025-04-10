@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { auth, provider, signInWithPopup } from "../firebaseconfig";
+import { auth, provider, signInWithPopup } from "../firebaseconfig.js";
 import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
@@ -9,7 +9,7 @@ import googlelogo from "../assets/googlelogo.png";
 import { handleFailure, handleSuccess } from "../utils.js";
 import { ToastContainer } from "react-toastify";
 
-const Signin = () => {
+const SigninAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +20,7 @@ const Signin = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       handleSuccess("Login successful");
-      navigate("/map"); // Redirect to dashboard
+      navigate("/dashboard"); // Redirect to dashboard
     } catch (err) {
       handleFailure("Invalid credentials");
       setError("Invalid credentials");
@@ -46,7 +46,7 @@ const Signin = () => {
       const result = await signInWithPopup(auth, provider);
       // pass the user data to dashboard page
       localStorage.setItem("username", result.user.displayName);
-      navigate("/map");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error.message);
     }
@@ -57,7 +57,7 @@ const Signin = () => {
       <div className="flex justify-center items-center min-h-screen  ">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md ">
           <h1 className="text-4xl font-semibold text-blue-700 text-center mb-6">
-            Login
+            Admin Login
           </h1>
           <form
             className="space-y-6 flex flex-col justify-center items-center"
@@ -108,7 +108,7 @@ const Signin = () => {
               // transition={Slide}
             />
           </form>
-          <div className="flex flex-row justify-between align-middle items-center my-7">
+          <div className="flex flex-row justify-between align-middle items-center mb-2 ml-30">
             <button
               type="button"
               onClick={handleForgotPassword}
@@ -117,13 +117,13 @@ const Signin = () => {
               Forgot Password?
             </button>
 
-            <button
+            {/* <button
               onClick={handleGoogleLogin}
               className=" text-black py-3 px-2 rounded-lg flex items-center justify-center cursor-pointer hover:underline  decoration-black "
             >
               <img src={googlelogo} alt="Google" className="w-5 h-5 mr-1" />
               Sign in with Google
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
@@ -131,4 +131,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default SigninAdmin;

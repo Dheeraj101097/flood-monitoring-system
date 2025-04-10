@@ -5,6 +5,9 @@ import Login from "./Pages/Signin";
 import Dashboard from "./Pages/Dashboard";
 import PrivateRoute from "./protectedRoute";
 import FullView from "./Pages/FullView";
+import Home from "./Pages/Home";
+import Map from "./Pages/Map";
+import SigninAdmin from "./Pages/SigninAdmin";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,8 +15,9 @@ function App() {
   return (
     <>
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/adminlogin" element={<SigninAdmin />} />
         <Route path="/signup" element={<Signup />} />
         <Route
           path="/dashboard"
@@ -23,7 +27,15 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/fullview" element={<FullView />} />
+        <Route
+          path="/fullview"
+          element={
+            <PrivateRoute>
+              <FullView />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/map" element={<Map />} />
       </Routes>
     </>
   );
