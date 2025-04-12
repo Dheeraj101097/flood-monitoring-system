@@ -10,6 +10,7 @@ import {
   FaRoute,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import fms from "../assets/fms1.png";
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -82,7 +83,7 @@ const Home = () => {
       </header>
 
       {/* Hero Section */}
-      <section className=" bg-gradient-to-r from-blue-500 to-blue-900 text-white py-20 ">
+      <section className=" bg-gradient-to-r from-blue-500 to-blue-900 text-white py-6 flex flex-row justify-evenly items-center">
         <div className="max-w-3xl px-10  ">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Smart Underpass Flood Monitoring System
@@ -97,6 +98,9 @@ const Home = () => {
           >
             View Dashboard
           </Link>
+        </div>
+        <div className="mr-20 ">
+          <img className="rounded-lg max-h-100 max-w-100" src={fms} />
         </div>
       </section>
 
