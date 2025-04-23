@@ -8,6 +8,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import googlelogo from "../assets/googlelogo.png";
 import { handleFailure, handleSuccess } from "../utils.js";
 import { ToastContainer } from "react-toastify";
+import Checkbox from "../components/Checkbox.jsx";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -63,20 +64,12 @@ const Signin = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen  ">
-        <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md ">
+      <div className="flex justify-center items-center min-h-screen ">
+        <div className="bg-white p-8 rounded-xl shadow-lg max-w-fit  ">
           <h1 className="text-4xl font-semibold text-blue-700 text-center mb-6">
-            User Login
+            Login
           </h1>
 
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-36 p-3 border mb-6 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
-            <option value="User">Login as User</option>
-            <option value="Admin">Login as Admin</option>
-          </select>
           <form
             className="space-y-6 flex flex-col justify-center items-center"
             onSubmit={handleLogin}
@@ -97,6 +90,11 @@ const Signin = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <div className="flex items-center mb-4 gap-2 font-extralight">
+              <Checkbox />
+              <span>Select if you are Admin</span>
+            </div>
+
             <button
               type="submit"
               className="w-full bg-gradient-to-br from-blue-600 to-blue-300 text-white font-semibold py-3 rounded-lg cursor-pointer hover:bg-green-400 "
@@ -107,7 +105,7 @@ const Signin = () => {
               Don't have an account,{" "}
               <Link
                 to={"/signup"}
-                className="text-blue-500 hover:text-green-400 underline"
+                className="text-blue-500 hover:text-green-400 underline font-extralight"
               >
                 Signup
               </Link>
@@ -126,18 +124,18 @@ const Signin = () => {
               // transition={Slide}
             />
           </form>
-          <div className="flex flex-row justify-between align-middle items-center my-7">
+          <div className="flex flex-row justify-between align-middle items-center my-2">
             <button
               type="button"
               onClick={handleForgotPassword}
-              className="px-2 py-3 rounded-lg  flex items-center justify-center cursor-pointer  text-red-500 hover:underline "
+              className="px-2 py-3 rounded-lg  flex items-center justify-center cursor-pointer  text-red-500 hover:underline font-extralight "
             >
               Forgot Password?
             </button>
 
             <button
               onClick={handleGoogleLogin}
-              className=" text-black py-3 px-2 rounded-lg flex items-center justify-center cursor-pointer hover:underline  decoration-black "
+              className=" text-black py-3 px-2 rounded-lg flex items-center justify-center cursor-pointer hover:underline  decoration-black font-extralight "
             >
               <img src={googlelogo} alt="Google" className="w-5 h-5 mr-1" />
               Sign in with Google
