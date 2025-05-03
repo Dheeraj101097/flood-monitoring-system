@@ -1,80 +1,19 @@
-// import { useState } from "react";
-// import {
-//   FaBell,
-//   FaExclamationTriangle,
-//   FaTools,
-//   FaBolt,
-//   FaRobot,
-//   FaRoute,
-// } from "react-icons/fa";
-// import { Link } from "react-router-dom";
-// import fms from "../assets/fms1.png";
-
-//       {/* Call to Action */}
-
-//       <section class="bg-gradient-to-r from-blue-500 to-blue-900 text-white py-16">
-//         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-//           <h2 class="text-3xl font-bold mb-4">
-//             Join Us in Making Cities Safer and Smarter.
-//           </h2>
-//           <p class="text-xl opacity-90 mb-8 max-w-3xl mx-auto">
-//             Join cities worldwide using FloodSense to create safer, smarter
-//             urban infrastructure.
-//           </p>
-//           <div class="flex flex-wrap justify-center gap-4">
-//             <a
-//               href="#"
-//               class="bg-white text-blue-700 font-semibold py-2 px-6 rounded-full hover:bg-gray-200 transition duration-300"
-//             >
-//               Request Demo
-//             </a>
-//             <a
-//               href="#"
-//               class="bg-white text-blue-700 font-semibold py-2 px-6 rounded-full hover:bg-gray-200 transition duration-300"
-//             >
-//               Contact Us
-//             </a>
-//           </div>
-//         </div>
-//       </section>
-
-//       {/* Footer */}
-
-//     </div>
-//   );
-// };
-
-// export default Home;
-//
-//
-//
-//
-//
-//
-//
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  FaWater,
-  FaMapMarkedAlt,
-  FaMobile,
-  FaChartLine,
-  FaSun,
-  FaMoon,
-  FaBell,
-  FaExclamationTriangle,
-  FaTools,
-  FaBolt,
-  FaRobot,
-  FaRoute,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
+  Waves,
+  MapPinned,
+  Smartphone,
+  LineChart,
+  Bot,
+  Settings,
+  BatteryCharging,
+  Moon,
+  SunMediumIcon,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useTheme } from "../context/ThemeContext"; // Import the context
-
 function Home() {
   const [darkMode, setDarkMode] = useState(false);
-  // const [darkMode, toggleDarkMode] = useTheme(); // use context instead of local state
 
   useEffect(() => {
     if (darkMode) {
@@ -84,56 +23,106 @@ function Home() {
     }
   }, [darkMode]);
 
+  // const features = [
+  //   {
+  //     icon: (
+  //       <FaWater className="text-4xl font-light text-blue-500 dark:text-blue-400" />
+  //     ),
+  //     title: "Real-time Flood Monitoring",
+  //     description:
+  //       "Advanced sensors provide instant water level updates and flood risk assessment",
+  //   },
+  //   {
+  //     icon: (
+  //       <FaMapMarkedAlt className="text-4xl text-orange-300 dark:text-orange-300" />
+  //     ),
+  //     title: "Interactive Mapping",
+  //     description:
+  //       "Visualize flood-prone areas and safe zones with our detailed mapping system",
+  //   },
+  //   {
+  //     icon: <FaMobile className="text-4xl text-cyan-300 dark:text-cyan-300" />,
+  //     title: "Mobile Alerts",
+  //     description:
+  //       "Receive immediate notifications about potential flood risks in your area",
+  //   },
+  //   {
+  //     icon: (
+  //       <FaChartLine className="text-4xl text-green-500 dark:text-green-400" />
+  //     ),
+  //     title: "Predictive Analytics",
+  //     description:
+  //       "AI-powered predictions for better flood preparedness and response",
+  //   },
+  //   {
+  //     icon: <FaRobot className="text-4xl text-green-500 dark:text-green-400" />,
+  //     title: "AI-based Pothole Detection",
+  //     description:
+  //       "Advanced machine learning to identify and report road damage and potholes.",
+  //   },
+
+  //   {
+  //     icon: <FaTools />,
+  //     title: "Easy Installation",
+  //     description: "Simple and fast setup with minimal infrastructure.",
+  //   },
+  //   {
+  //     icon: <FaBolt />,
+  //     title: "Energy Efficient",
+  //     description: "Low-power devices ensure long-lasting performance.",
+  //   },
+  // ];
+
   const features = [
     {
-      icon: (
-        <FaWater className="text-4xl font-light text-blue-500 dark:text-blue-400" />
-      ),
+      icon: <Waves className="text-4xl text-blue-500 dark:text-blue-400" />,
       title: "Real-time Flood Monitoring",
       description:
         "Advanced sensors provide instant water level updates and flood risk assessment",
     },
     {
-      icon: (
-        <FaMapMarkedAlt className="text-4xl text-green-500 dark:text-green-400" />
-      ),
+      icon: <MapPinned className="text-4xl text-cyan-300 dark:text-cyan-300" />,
       title: "Interactive Mapping",
       description:
         "Visualize flood-prone areas and safe zones with our detailed mapping system",
     },
     {
-      icon: <FaMobile className="text-4xl text-blue-500 dark:text-blue-400" />,
+      icon: (
+        <Smartphone className="text-4xl text-orange-300 dark:text-orange-300" />
+      ),
       title: "Mobile Alerts",
       description:
         "Receive immediate notifications about potential flood risks in your area",
     },
     {
       icon: (
-        <FaChartLine className="text-4xl text-green-500 dark:text-green-400" />
+        <LineChart className="text-4xl text-green-500 dark:text-green-400" />
       ),
       title: "Predictive Analytics",
       description:
         "AI-powered predictions for better flood preparedness and response",
     },
     {
-      icon: <FaRobot className="text-4xl text-green-500 dark:text-green-400" />,
+      icon: <Bot className="text-4xl text-purple-500 dark:text-purple-400" />,
       title: "AI-based Pothole Detection",
       description:
         "Advanced machine learning to identify and report road damage and potholes.",
     },
-
     {
-      icon: <FaTools />,
+      icon: (
+        <Settings className="text-4xl text-amber-300 dark:text-amber-300" />
+      ),
       title: "Easy Installation",
       description: "Simple and fast setup with minimal infrastructure.",
     },
     {
-      icon: <FaBolt />,
+      icon: (
+        <BatteryCharging className="text-4xl text-red-500 dark:text-red-400" />
+      ),
       title: "Energy Efficient",
       description: "Low-power devices ensure long-lasting performance.",
     },
   ];
-
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       {/* Navigation */}
@@ -147,21 +136,11 @@ function Home() {
                 className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
                 {darkMode ? (
-                  <FaSun className="text-yellow-500 text-xl" />
+                  <SunMediumIcon className="text-yellow-500 text-xl" />
                 ) : (
-                  <FaMoon className="text-gray-600 text-xl" />
+                  <Moon className="text-gray-600 text-xl" />
                 )}
               </button>
-              {/* <button
-                onClick={toggleDarkMode}
-                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              >
-                {darkMode ? (
-                  <FaSun className="text-yellow-500 text-xl" />
-                ) : (
-                  <FaMoon className="text-gray-600 text-xl" />
-                )}
-              </button> */}
             </div>
           </div>
         </div>
@@ -289,7 +268,7 @@ function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      {/* <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -392,6 +371,103 @@ function Home() {
                   </a>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </footer> */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-10"
+          >
+            <h2 className="text-3xl font-extrabold mb-2 gradient-text">
+              FloodSense
+            </h2>
+            <p className="text-gray-400">
+              Smart solutions for urban flood monitoring and management.
+            </p>
+            <p className="mt-6 text-sm text-gray-500">
+              © 2025 FloodSense. All rights reserved.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 text-sm">
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+              <ul className="space-y-2">
+                {["Home", "Live Map", "Documentation", "About Us"].map(
+                  (link, i) => (
+                    <li key={i}>
+                      <a
+                        href="#"
+                        className="text-gray-400 hover:text-white transition-colors duration-200"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  )
+                )}
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Contact</h3>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-2">
+                  <i className="fas fa-envelope text-blue-400 mt-1"></i>
+                  <span>contact@floodsense.io</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <i className="fas fa-phone text-blue-400 mt-1"></i>
+                  <span>+1 (555) 123-4567</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <i className="fas fa-map-marker-alt text-blue-400 mt-1"></i>
+                  <span>Smart City Lab, Tech Avenue</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Connect */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Connect</h3>
+              <div className="flex space-x-4">
+                {[
+                  { icon: "fab fa-github", label: "GitHub" },
+                  { icon: "fab fa-twitter", label: "Twitter" },
+                  { icon: "fab fa-linkedin", label: "LinkedIn" },
+                  { icon: "fab fa-youtube", label: "YouTube" },
+                ].map((social, i) => (
+                  <a
+                    key={i}
+                    href="#"
+                    aria-label={social.label}
+                    className="text-gray-400 hover:text-white transition-colors duration-200 text-xl"
+                  >
+                    <i className={social.icon}></i>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Optional: Newsletter or About */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Stay Updated</h3>
+              <p className="text-gray-400 mb-3">
+                Subscribe to our newsletter for updates on flood alerts and
+                smart city solutions.
+              </p>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="w-full px-3 py-2 rounded bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
           </div>
         </div>
