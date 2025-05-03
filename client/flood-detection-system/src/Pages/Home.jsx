@@ -400,18 +400,21 @@ function Home() {
             <div>
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                {["Home", "Live Map", "Documentation", "About Us"].map(
-                  (link, i) => (
-                    <li key={i}>
-                      <a
-                        href="#"
-                        className="text-gray-400 hover:text-white transition-colors duration-200"
-                      >
-                        {link}
-                      </a>
-                    </li>
-                  )
-                )}
+                {[
+                  { link: "Home", to: "" },
+                  { link: "Live Map", to: "" },
+                  { link: "Documentation", to: "" },
+                  { link: "About Us", to: "" },
+                ].map((ql, i) => (
+                  <li key={i}>
+                    <a
+                      href={ql.to}
+                      className="text-gray-400 hover:text-white transition-colors duration-200"
+                    >
+                      {ql.link}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -421,15 +424,15 @@ function Home() {
               <ul className="space-y-3">
                 <li className="flex items-start gap-2">
                   <i className="fas fa-envelope text-blue-400 mt-1"></i>
-                  <span>contact@floodsense.io</span>
+                  <span>dheerajap6@gmail.com</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <i className="fas fa-phone text-blue-400 mt-1"></i>
-                  <span>+1 (555) 123-4567</span>
+                  <span>+91 760 6072474</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <i className="fas fa-map-marker-alt text-blue-400 mt-1"></i>
-                  <span>Smart City Lab, Tech Avenue</span>
+                  <span>Bilaspur, C.G.</span>
                 </li>
               </ul>
             </div>
@@ -439,14 +442,14 @@ function Home() {
               <h3 className="text-lg font-semibold mb-4">Connect</h3>
               <div className="flex space-x-4">
                 {[
-                  { icon: "fab fa-github", label: "GitHub" },
-                  { icon: "fab fa-twitter", label: "Twitter" },
-                  { icon: "fab fa-linkedin", label: "LinkedIn" },
-                  { icon: "fab fa-youtube", label: "YouTube" },
+                  { icon: "fab fa-github", label: "GitHub", link: "" },
+                  // { icon: "fab fa-twitter", label: "Twitter" },
+                  { icon: "fab fa-linkedin", label: "LinkedIn", link: "" },
+                  // { icon: "fab fa-youtube", label: "YouTube", link: "" },
                 ].map((social, i) => (
                   <a
                     key={i}
-                    href="#"
+                    href={social.link}
                     aria-label={social.label}
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-xl"
                   >
